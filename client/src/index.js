@@ -9,7 +9,7 @@ import authReducer from './reducers/authReducer';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    authNode: authReducer,
   },
 });
 
