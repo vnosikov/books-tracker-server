@@ -6,10 +6,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import App from './components/App';
 import authReducer from './reducers/authReducer';
 
+import 'materialize-css/dist/css/materialize.css';
+
 
 const store = configureStore({
   reducer: {
-    authNode: authReducer,
+    auth: authReducer,
   },
 });
 

@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-const Header = () => <h2>Header</h2>
-const Landing = () => <h2>Landing</h2>
-const ProjectsList = () => <h2>Projects List</h2>
+import { requestCurrentUserAction } from '../reducers/authReducer';
+import Header from './Header';
+import Landing from './Landing';
+import ProjectsList from './ProjectsList';
+
+
 const Dashboard = () => <h2>Dashboard</h2>
 const NewItem = () => <h2>New Item</h2>
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(
+    () => {
+      dispatch(requestCurrentUserAction());
+    },
+    [dispatch]
+  );
+
   return (
-    <div>
-      <Header />
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/projects" component={ProjectsList} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/dashboard/new" component={NewItem} />
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <div className="container">
+        <Header />
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/projects" component={ProjectsList} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/dashboard/new" component={NewItem} />
+      </div>
+    </BrowserRouter>
   );
 }
 
