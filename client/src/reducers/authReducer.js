@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCurrentUser } from '../api/authentication';
-import { addProject } from '../api/projects';
+import { setCurrentProject } from '../api/projects';
 
-/* 
+/*
 data = null means we don't know if a user is logged in
 data = false means we know that a user is not logged in
-data = {User model} means that a user is logged in and we got its props  
+data = {User model} means that a user is logged in and we got its props
 */
 
 const authSlice = createSlice({
@@ -23,29 +23,32 @@ const authSlice = createSlice({
       state.data = null;
       state.error = action.payload;
     },
-
-  }
+    SET_CURRENT_PROJECT: (state, action) => {
+      state.data.currentProjectId = action.payload;
+    },
+  },
 });
 
 const {
   FETCH_USER_SUCCESS,
-  FETCH_USER_FAILURE
+  FETCH_USER_FAILURE,
+  SET_CURRENT_PROJECT,
 } = authSlice.actions;
 
-export const requestCurrentUserAction = () => async dispatch => {
+export const requestCurrentUserAction = () => async (dispatch) => {
   try {
     const { data } = await getCurrentUser();
     dispatch(FETCH_USER_SUCCESS(data));
-  } catch(err) {
+  } catch (err) {
     dispatch(FETCH_USER_FAILURE(err));
   }
 };
 
-export const addProjectAction = name => async dispatch => {
+export const selectProjectAction = (id) => async (dispatch) => {
   try {
-    const { data } = await addProject(name);
-    dispatch(FETCH_USER_SUCCESS(data));
-  } catch(err) {
+    await setCurrentProject(id);
+    dispatch(SET_CURRENT_PROJECT(id));
+  } catch (err) {
     // TODO: WTF should come here - ??
   }
 };

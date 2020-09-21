@@ -5,11 +5,14 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 
 const keys = require('./config/keys.js');
+
 require('./models/User');
+require('./models/Project');
 require('./services/passport');
 
 
 mongoose.connect(keys.mongoURI);
+mongoose.set('useFindAndModify', false);
 
 const app = express();
 
