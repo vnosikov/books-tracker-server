@@ -1,29 +1,22 @@
 import React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Navbar, Nav, Spinner } from 'react-bootstrap';
 
-const Header = () => {
-  const authData = useSelector((state) => state.auth.data, shallowEqual);
-  return (
-    <nav>
-      <div className="nav-wrapper">
-        <Link
-          to="/"
-          className="left brand-logo"
-        >
-          Books Tracker
-        </Link>
-        <ul className="right">
-          {authData === false && (
-            <li><a href="/auth/google">Login With Google</a></li>
-          )}
-          {authData && (
-            <li><a href="/api/logout">Logout</a></li>
-          )}
-        </ul>
-      </div>
-    </nav>
-  );
-};
+
+const Header = ({ authStatus }) => (
+  <Navbar bg="light">
+    <Navbar.Brand>Books Tracker</Navbar.Brand>
+    <Nav.Item className="ml-auto">
+      {authStatus && <Nav.Link href="/api/logout">Logout</Nav.Link>}
+      {authStatus === false && <Nav.Link href="/auth/google">Login with Google</Nav.Link>}
+      {authStatus === undefined && <Spinner animation="border" variant="primary" size="sm" />}
+    </Nav.Item>
+  </Navbar>
+);  
+
+
+Header.propTypes = {
+  authStatus: PropTypes.oneOf([true, false, undefined]).isRequired,
+}
 
 export default Header;

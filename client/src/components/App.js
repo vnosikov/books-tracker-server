@@ -1,32 +1,30 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import { requestCurrentUserAction } from '../reducers/authReducer';
-import { getProjectsListAction } from '../reducers/projectsReducer';
 import Header from './Header';
-import Dashboard from './Dashboard';
-import ProjectsList from './ProjectsList';
+import { getCurrentUser } from '../api/authentication';
 
-const NewItem = () => <h2>New Item</h2>;
+
+const Dashboard = () => <h2>New Item</h2>;
 
 const App = () => {
-  const dispatch = useDispatch();
+  const [authStatus, setAuthStatus] = useState(undefined);
   useEffect(
     () => {
-      dispatch(requestCurrentUserAction());
-      dispatch(getProjectsListAction());
+      async function doRequest() {
+        const { data } = await getCurrentUser();
+        setAuthStatus(!!data);
+      }
+      doRequest();
     },
-    [dispatch],
+    [],
   );
 
   return (
     <BrowserRouter>
       <div className="container">
-        <Header />
+        <Header authStatus={authStatus} />
         <Route exact path="/" component={Dashboard} />
-        <Route exact path="/projects" component={ProjectsList} />
-        <Route exact path="/new" component={NewItem} />
       </div>
     </BrowserRouter>
   );
