@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import Header from './Header';
+import Dashboard from './Dashboard';
 import { getCurrentUser } from '../api/authentication';
 
-
-const Dashboard = () => <h2>New Item</h2>;
 
 const App = () => {
   const [authStatus, setAuthStatus] = useState(undefined);
@@ -21,12 +20,14 @@ const App = () => {
   );
 
   return (
-    <BrowserRouter>
-      <div className="container">
-        <Header authStatus={authStatus} />
-        <Route exact path="/" component={Dashboard} />
-      </div>
-    </BrowserRouter>
+    <div className="container">
+      <Header authStatus={authStatus} />
+      {authStatus && (
+        <BrowserRouter>
+          <Route exact path="/" component={Dashboard} />
+        </BrowserRouter>
+      )}
+    </div>
   );
 };
 
