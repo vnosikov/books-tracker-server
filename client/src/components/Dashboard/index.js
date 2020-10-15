@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { ListGroup, Badge, Card, ListGroupItem } from 'react-bootstrap';
-import Collapse from 'react-bootstrap/Collapse';
 
-import getFullBookName from '../../utils/getFullBookName';
+import BooksList from './BooksList';
+import BookDetail from './BookDetails';
 
 import booksData from '../../dummies/books';
 
@@ -19,26 +18,25 @@ const Dashboard = () => {
   }
 
   const activeBook = booksData.find(b => b._id === activeBookId);
-  const references = !activeBook ? [] :
+  const bookReferences = !activeBook ? [] :
     activeBook.references.map(id => booksData.find(b => b._id === id));
+  const targetReferences = !activeBook ? [] :
+    booksData.filter(b => b.references.includes(activeBookId));
 
   return (
     <div>
-      <ListGroup>
-        {booksData.map(b => (
-          <ListGroup.Item
-            key={b._id}
-            className="d-flex align-items-baseline"
-            action
-            active={b._id === activeBookId}
-            onClick={() => { onItemClick(b._id); }}
-          >
-            {getFullBookName(b.title, b.authors)}
-            <Badge variant="info" className="ml-auto">{b.nRefs}</Badge>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-      <Collapse in={activeBookId} className="mt-5">
+      <BooksList
+        booksData={booksData}
+        activeBookId={activeBookId}
+        onItemClick={onItemClick}
+      />
+      <BookDetail
+        show={activeBookId}
+        bookReferences={bookReferences}
+        targetReferences={targetReferences}
+      />
+    
+      {/* <Collapse in={activeBookId} className="mt-5">
         <Card body>
           <ListGroup>
             {references.map(rb => (
@@ -52,7 +50,7 @@ const Dashboard = () => {
             ))}
           </ListGroup>
         </Card>
-      </Collapse>
+      </Collapse> */}
     </div>
   );
 };
