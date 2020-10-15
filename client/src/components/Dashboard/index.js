@@ -9,7 +9,7 @@ import booksData from '../../dummies/books';
 const Dashboard = () => {
   const [activeBookId, setActiveBookId] = useState(null);
 
-  const onItemClick = id => {
+  const selectBook = id => {
     if (activeBookId === id) {
       setActiveBookId(null);
     } else {
@@ -28,29 +28,14 @@ const Dashboard = () => {
       <BooksList
         booksData={booksData}
         activeBookId={activeBookId}
-        onItemClick={onItemClick}
+        onItemClick={selectBook}
       />
       <BookDetail
-        show={activeBookId}
+        show={!!activeBookId}
         bookReferences={bookReferences}
         targetReferences={targetReferences}
+        selectBook={selectBook}
       />
-    
-      {/* <Collapse in={activeBookId} className="mt-5">
-        <Card body>
-          <ListGroup>
-            {references.map(rb => (
-              <ListGroup.Item
-                key={rb._id}
-                className="d-flex align-items-baseline"
-                action
-              >
-                {getFullBookName(rb.title, rb.authors)}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Card>
-      </Collapse> */}
     </div>
   );
 };

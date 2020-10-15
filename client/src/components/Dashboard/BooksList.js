@@ -1,25 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ListGroup, Badge } from 'react-bootstrap';
-import getFullBookName from '../../utils/getFullBookName';
+import { Badge } from 'react-bootstrap';
+import Enumeration from './Enumeration';
 
 
 const BooksList = ({ booksData, activeBookId, onItemClick }) => (
-  <ListGroup>
-    {booksData.map(b => (
-      <ListGroup.Item
-        key={b._id}
-        className="d-flex align-items-baseline"
-        action
-        active={b._id === activeBookId}
-        onClick={() => { onItemClick(b._id); }}
-      >
-        {getFullBookName(b.title, b.authors)}
-        <Badge variant="info" className="ml-auto">{b.nRefs}</Badge>
-      </ListGroup.Item>
-    ))}
-  </ListGroup>
+  <Enumeration
+    books={booksData}
+    withAction
+    isActiveFunction={ id => (id === activeBookId) }
+    onItemClick={onItemClick}
+    AdditionalComponent={({ nRefs }) => <Badge variant="info" className="ml-auto">{nRefs}</Badge>} 
+  />
 );
 
 BooksList.defaultProps = {
