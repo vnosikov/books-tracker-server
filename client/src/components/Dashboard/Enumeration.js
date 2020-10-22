@@ -16,11 +16,11 @@ const Enumeration = ({
   <ListGroup>
     {books.map(b => (
       <ListGroup.Item
-        key={b._id}
+        key={b.id}
         className="d-flex align-items-baseline"
         action={withAction}
-        active={isActiveFunction(b._id)}
-        onClick={() => { onItemClick(b._id); }}
+        active={isActiveFunction(b.id)}
+        onClick={() => { onItemClick(b.id); }}
       >
         {getFullBookName(b.title, b.authors)}
         <AdditionalComponent {...b} />

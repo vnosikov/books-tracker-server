@@ -11,7 +11,7 @@ const BooksList = ({ booksData, activeBookId, onItemClick }) => (
     withAction
     isActiveFunction={ id => (id === activeBookId) }
     onItemClick={onItemClick}
-    AdditionalComponent={({ nRefs }) => <Badge variant="info" className="ml-auto">{nRefs}</Badge>} 
+    AdditionalComponent={({ pointers }) => <Badge variant="info" className="ml-auto">{pointers.length}</Badge>} 
   />
 );
 

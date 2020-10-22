@@ -1,6 +1,6 @@
 export default [
   {
-    _id: '1',
+    id: '1',
     title: 'Глазами государства',
     authors: ['James Scott'],
     references: ['2', '3'],
@@ -8,7 +8,7 @@ export default [
     read: true,
   },
   {
-    _id: '2',
+    id: '2',
     title: 'The Great Transformation',
     authors: ['Karl Polyani'],
     references: [],
@@ -16,7 +16,7 @@ export default [
     read: false,
   },
   {
-    _id: '3',
+    id: '3',
     title: 'Тестова книга',
     authors: ['Первый Автор', 'Второй Автор'],
     references: [],
@@ -24,7 +24,7 @@ export default [
     read: false,
   },
   {
-    _id: '4',
+      id: '4',
     title: 'Ахинея: Сборник',
     authors: ['Первый Автор'],
     references: ['3', '1'],

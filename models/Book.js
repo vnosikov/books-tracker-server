@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const bookSchema = new Schema({
   authors: { type: Array, default: [] },
-  name: String,
+  title: String,
   references: { type: Array, default: [] },
-  _project: { type: Schema.Types.ObjectId, ref: 'Project' },
-
+  read: Boolean,
+  _user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 mongoose.model('books', bookSchema);

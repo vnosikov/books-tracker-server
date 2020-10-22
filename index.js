@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys.js');
 
 require('./models/User');
-require('./models/Project');
+require('./models/Book');
 require('./services/passport');
 
 
@@ -27,7 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authentication')(app);
-require('./routes/projects')(app);
+require('./routes/books')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up productions assets
