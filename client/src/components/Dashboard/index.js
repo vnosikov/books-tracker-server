@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Card, Button } from 'react-bootstrap';
 
 import BooksList from './BooksList';
 import BookDetail from './BookDetails';
 
-import { getBooks } from '../../api/books';
-import useFetch from '../../utils/useFetch';
 
-
-const nullBook = { references: [], pointers: [] };
-
-const Dashboard = () => {
+const Dashboard = ({ booksData }) => {
   const [activeBookId, setActiveBookId] = useState(null);
-  const [booksData, loading, error] = useFetch(getBooks);
 
   const selectBook = id => {
-    debugger;
     if (activeBookId === id) {
       setActiveBookId(null);
     } else {
@@ -22,8 +17,6 @@ const Dashboard = () => {
     }
   }
 
-  if (loading) return null;
-  if (error) return null;
 
   const getBookById = targetId => booksData.find(b => b.id === targetId);
 
@@ -33,11 +26,16 @@ const Dashboard = () => {
 
   return (
     <div>
-      <BooksList
-        booksData={booksData}
-        activeBookId={activeBookId}
-        onItemClick={selectBook}
-      />
+      <Card>
+        <Card.Header>
+          <Button href="/books/new">Add Book</Button>
+        </Card.Header>
+        <BooksList
+          booksData={booksData}
+          activeBookId={activeBookId}
+          onItemClick={selectBook}
+        />
+      </Card>
       <BookDetail
         show={!!activeBookId}
         bookReferences={bookReferences}
@@ -46,6 +44,14 @@ const Dashboard = () => {
       />
     </div>
   );
+};
+
+
+const nullBook = { references: [], pointers: [] };
+
+
+Dashboard.propTypes = {
+  booksData: PropTypes.array.isRequired,
 };
 
 

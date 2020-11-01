@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 
 import Header from './Header';
-import Dashboard from './Dashboard';
+import MainContent from './MainContent';
+
 import { getCurrentUser } from '../api/authentication';
 
 
@@ -22,11 +22,7 @@ const App = () => {
   return (
     <div className="container">
       <Header authStatus={authStatus} />
-      {authStatus && (
-        <BrowserRouter>
-          <Route exact path="/" component={Dashboard} />
-        </BrowserRouter>
-      )}
+      {authStatus && <MainContent />}
     </div>
   );
 };

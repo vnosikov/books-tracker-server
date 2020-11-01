@@ -24,9 +24,18 @@ module.exports = (app) => {
     res.send(calculatedBooks);
   });
 
-  // app.get('/api/projects', requireLogin, async (req, res) => {
-  //   const projects = await Project.find({ _user: req.user.id });
-  // });
+  app.post('/api/books/add', requireLogin, async (req, res) => {
+    try {
+      const newBook = new Book({
+        _user: req.user.id,
+        ...req.body,
+      });
+      await newBook.save();
+      res.status(200).send();
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
+  });
 
   // app.delete('/api/projects/:id', requireLogin, async (req, res) => {
   //   await Project.findByIdAndDelete(req.params.id);

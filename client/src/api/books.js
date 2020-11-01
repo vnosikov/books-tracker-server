@@ -7,3 +7,9 @@ export async function getBooks(name) {
 
   return res.data;
 }
+
+export async function addBook(book) {
+  const url = '/api/books/add';
+
+  await axios.post(url, book); 
+}
