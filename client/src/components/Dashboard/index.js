@@ -5,6 +5,8 @@ import { Card, Button } from 'react-bootstrap';
 import BooksList from './BooksList';
 import BookDetail from './BookDetails';
 
+import { deleteBook } from '../../api/books';
+
 
 const Dashboard = ({ booksData }) => {
   const [activeBookId, setActiveBookId] = useState(null);
@@ -17,6 +19,12 @@ const Dashboard = ({ booksData }) => {
     }
   }
 
+  const onRemoveBook = () => {
+    if (!activeBookId) {
+      return;
+    }
+    deleteBook(activeBookId);
+  }
 
   const getBookById = targetId => booksData.find(b => b.id === targetId);
 
@@ -27,8 +35,27 @@ const Dashboard = ({ booksData }) => {
   return (
     <div>
       <Card>
-        <Card.Header>
-          <Button href="/books/new">Add Book</Button>
+        <Card.Header className="">
+          <Button
+            className="mr-1"
+            href="/books/new"
+          >
+            Новая книга
+          </Button>
+          <Button
+            variant="info"
+            className="mr-1"
+            disabled={!activeBookId}
+          >
+            Изменить
+          </Button>
+          <Button
+            variant="danger"
+            disabled={!activeBookId}
+            onClick={onRemoveBook}
+          >
+            Удалить
+          </Button>
         </Card.Header>
         <BooksList
           booksData={booksData}

@@ -13,3 +13,8 @@ export async function addBook(book) {
 
   await axios.post(url, book); 
 }
+
+export async function deleteBook(id) {
+  const url = `/api/books/delete/${id}`;
+  await axios.delete(url, id);
+}

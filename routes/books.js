@@ -37,6 +37,23 @@ module.exports = (app) => {
     }
   });
 
+  app.delete('/api/books/delete/:id', requireLogin, async (req, res) => {
+    try {
+      console.log('REQ BODY', req.params);
+      const book = await Book.findById(req.params.id);
+      console.log('BOOK USER ID: ', typeof book._user);
+      console.log('SENDER USER ID: ', req.user.id);
+      if (book._user.equals(req.user.id)) {
+        book.remove();
+        res.status(200).send();
+      } else {
+        res.status(401).send('No access to this book');
+      }
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
+  });
+
   // app.delete('/api/projects/:id', requireLogin, async (req, res) => {
   //   await Project.findByIdAndDelete(req.params.id);
   //   res.status(200).send();
