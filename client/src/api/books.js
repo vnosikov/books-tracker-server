@@ -18,3 +18,9 @@ export async function deleteBook(id) {
   const url = `/api/books/delete/${id}`;
   await axios.delete(url, id);
 }
+
+export async function editBook(book, bookId) {
+  const url = `/api/books/edit/${bookId}`;
+
+  await axios.put(url, book); 
+}

@@ -46,6 +46,7 @@ const Dashboard = ({ booksData }) => {
             variant="info"
             className="mr-1"
             disabled={!activeBookId}
+            href={`/books/edit/${activeBookId}`}
           >
             Изменить
           </Button>

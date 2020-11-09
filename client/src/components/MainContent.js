@@ -17,8 +17,9 @@ const MainContent = () => {
 
   return (
     <BrowserRouter>
-      <Route exact path="/" render={() => <Dashboard booksData={booksData}/>} />
-      <Route exact path="/books/new" render={() => <BookEditor booksData={booksData}/>} />
+      <Route exact path={["/", "/books"]} render={() => <Dashboard booksData={booksData}/>} />
+      <Route exact path="/books/new" render={() => <BookEditor booksData={booksData} newBook />} />
+      <Route exact path="/books/edit/:bookId" render={() => <BookEditor booksData={booksData}/>} />
     </BrowserRouter>
   );
 };

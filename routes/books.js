@@ -31,7 +31,7 @@ module.exports = (app) => {
         ...req.body,
       });
       await newBook.save();
-      res.status(200).send();
+      res.status(201).send();
     } catch (err) {
       res.status(500).send({ error: err.message });
     }
@@ -56,6 +56,19 @@ module.exports = (app) => {
       } else {
         res.status(401).send('No access to this book');
       }
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
+  });
+
+  app.put('/api/books/edit/:id', requireLogin, async(req, res) => {
+    try {
+      const updatedBook = req.body;
+
+      console.log('NEW BOOK: ', updatedBook);
+
+      await Book.updateOne({ _id: req.params.id }, updatedBook);
+      res.status(200).send();
     } catch (err) {
       res.status(500).send({ error: err.message });
     }

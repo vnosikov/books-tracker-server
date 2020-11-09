@@ -1,20 +1,40 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { Form, Card, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import QuickAddModal from './QuickAddModal';
+import { useParams } from 'react-router-dom';
 
-import { addBook } from '../api/books';
+import { addBook, editBook } from '../api/books';
 import useControlledInput from '../utils/useControlledInput';
 
-const BookEditor = ({ booksData }) => {
-  const [title, setTitle] = useControlledInput('');
-  const [authors, setAuthors] = useControlledInput('');
-  const [references, setReferences] = useState([]);
-  const [isRead, setIsRead] = useState(false);
+
+const BookEditor = ({ booksData, newBook }) => {
+
+  const bookId = useParams().bookId || null;
+  const bookToEdit = newBook ? emptyBook :
+    booksData.find(b => b.id === bookId);
+
+  const [title, setTitle] = useControlledInput(bookToEdit.title);
+  const [authors, setAuthors] = useControlledInput(bookToEdit.authors.join('\n'));
+  const [references, setReferences] = useState(
+    bookToEdit.references.map(r => ({
+      value: r,
+      label: booksData.find(b => b.id === r).title,
+    })),
+  );
+  const [isRead, setIsRead] = useState(bookToEdit.read);
   const [blocked, setBlocked] = useState(false);
 
   const [show, setShow] = useState(false);
+
+
+  const wat = bookToEdit.references.map(r => ({
+    value: r,
+    label: booksData.find(b => b.id === r),
+  }));
+  console.log('wat: ', wat);
 
   const selectOptions = booksData.map(b => ({
     label: b.title,
@@ -25,12 +45,16 @@ const BookEditor = ({ booksData }) => {
     const book = {
       title,
       authors: authors.split('\n'),
-      references: references.map(r => r.value),
+      references: references ? references.map(r => r.value) : [],
       read: isRead,
     };
 
     setBlocked(true);
-    await addBook(book);
+    if (newBook) {
+      await addBook(book);
+    } else {
+      await editBook(book, bookId);
+    }
     setBlocked(false);
   };
 
@@ -69,13 +93,14 @@ const BookEditor = ({ booksData }) => {
               isMulti
               isClearable
               options={selectOptions}
+              defaultValue={references}
               onChange={setReferences}
               disabled={blocked}  
             />
             <Form.Check
               type="checkbox"
               label="Прочитано"
-              value={isRead}
+              checked={isRead}
               onChange={() => { setIsRead(!isRead); }}
               disabled={blocked}
             />
@@ -97,8 +122,20 @@ const BookEditor = ({ booksData }) => {
 };
 
 
+const emptyBook = {
+  title: '',
+  authors: [],
+  references: [],
+  read: false,
+};
+
+BookEditor.defaultProps = {
+  newBook: false,
+}
+
 BookEditor.propTypes = {
   booksData: PropTypes.array.isRequired,
+  newBook: PropTypes.bool,
 };
 
 
