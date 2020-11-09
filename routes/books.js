@@ -39,13 +39,20 @@ module.exports = (app) => {
 
   app.delete('/api/books/delete/:id', requireLogin, async (req, res) => {
     try {
-      console.log('REQ BODY', req.params);
-      const book = await Book.findById(req.params.id);
-      console.log('BOOK USER ID: ', typeof book._user);
-      console.log('SENDER USER ID: ', req.user.id);
-      if (book._user.equals(req.user.id)) {
-        book.remove();
-        res.status(200).send();
+      const userId = req.user.id;
+      const bookId = req.params.id;
+      const allBooks = await Book.find({ _user: userId });
+      const book = await Book.findById(bookId);
+
+      if (book._user.equals(userId)) {
+        const refs = book.references;
+        const reverseRefs = getReverseRefs(allBooks, bookId);
+        if (refs.length === 0 && reverseRefs.length === 0) {
+          book.remove();
+          res.status(200).send();
+        } else {
+          res.status(403).send('This book has references or is referenced by other books');
+        }
       } else {
         res.status(401).send('No access to this book');
       }
