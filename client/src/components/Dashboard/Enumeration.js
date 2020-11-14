@@ -21,6 +21,7 @@ const Enumeration = ({
         action={withAction}
         active={isActiveFunction(b.id)}
         onClick={() => { onItemClick(b.id); }}
+        variant={b.read && !isActiveFunction(b.id) && 'secondary'}
       >
         {getFullBookName(b.title, b.authors)}
         <AdditionalComponent {...b} />
