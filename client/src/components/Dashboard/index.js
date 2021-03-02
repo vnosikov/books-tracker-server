@@ -39,6 +39,7 @@ const Dashboard = ({ booksData }) => {
           <Button
             className="mr-1"
             href="/books/new"
+            size="sm"
           >
             Новая книга
           </Button>
@@ -47,6 +48,7 @@ const Dashboard = ({ booksData }) => {
             className="mr-1"
             disabled={!activeBookId}
             href={`/books/edit/${activeBookId}`}
+            size="sm"
           >
             Изменить
           </Button>
@@ -54,6 +56,7 @@ const Dashboard = ({ booksData }) => {
             variant="danger"
             disabled={!activeBookId}
             onClick={onRemoveBook}
+            size="sm"
           >
             Удалить
           </Button>

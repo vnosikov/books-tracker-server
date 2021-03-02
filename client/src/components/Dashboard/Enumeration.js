@@ -13,7 +13,7 @@ const Enumeration = ({
   onItemClick,
   AdditionalComponent
 }) => (
-  <ListGroup>
+  <ListGroup style={{ maxHeight: '500px', overflow: 'auto' }}>
     {books.map(b => (
       <ListGroup.Item
         key={b.id}
