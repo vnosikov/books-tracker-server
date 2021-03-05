@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
+import { BrowserRouter } from 'react-router-dom';
+
 
 import Header from './Header';
 import MainContent from './MainContent';
@@ -22,10 +24,12 @@ const App = () => {
 
   return (
     <RecoilRoot>
-      <div className="container">
-        <Header authStatus={authStatus} />
-        {authStatus && <MainContent />}
-      </div>
+      <BrowserRouter>
+        <div className="container">
+          <Header authStatus={authStatus} />
+          {authStatus && <MainContent />}
+        </div>
+      </BrowserRouter>
     </RecoilRoot>
   );
 };

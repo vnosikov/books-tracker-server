@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, Nav, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const Header = ({ authStatus }) => (
   <Navbar bg="light">
-    <Navbar.Brand>Books Tracker</Navbar.Brand>
+    <Link className="navbar-brand" to="/">
+      Books Tracker
+    </Link>
     <Nav.Item className="ml-auto">
       {authStatus && <Nav.Link href="/api/logout">Logout</Nav.Link>}
       {authStatus === false && <Nav.Link href="/auth/google">Login with Google</Nav.Link>}
