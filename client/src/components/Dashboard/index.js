@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { Card, Button } from 'react-bootstrap';
 
 import BooksList from './BooksList';
@@ -7,6 +8,7 @@ import BookDetail from './BookDetails';
 
 import { deleteBook } from '../../api/books';
 import { useForceUpdate } from '../../atoms/booksListState';
+import { Link } from 'react-router-dom';
 
 
 const Dashboard = ({ booksData }) => {
@@ -40,22 +42,18 @@ const Dashboard = ({ booksData }) => {
     <div>
       <Card>
         <Card.Header className="">
-          <Button
-            className="mr-1"
-            href="/books/new"
-            size="sm"
+          <Link 
+            to="/books/new"
+            className="btn btn-primary btn-sm mr-1"
           >
             Новая книга
-          </Button>
-          <Button
-            variant="info"
-            className="mr-1"
-            disabled={!activeBookId}
-            href={`/books/edit/${activeBookId}`}
-            size="sm"
+          </Link>
+          <Link
+            to={`/books/edit/${activeBookId}`}
+            className={cn('btn btn-info btn-sm mr-1', { disabled: !activeBookId })}
           >
             Изменить
-          </Button>
+          </Link>
           <Button
             variant="danger"
             disabled={!activeBookId}
