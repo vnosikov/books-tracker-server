@@ -7,7 +7,7 @@ import Enumeration from './Enumeration';
 
 const BooksList = ({ booksData, activeBookId, onItemClick }) => (
   <Enumeration
-    books={booksData.sort((b1, b2) => b2.pointers.length - b1.pointers.length)}
+    books={[...booksData].sort((b1, b2) => b2.pointers.length - b1.pointers.length)}
     withAction
     isActiveFunction={ id => (id === activeBookId) }
     onItemClick={onItemClick}

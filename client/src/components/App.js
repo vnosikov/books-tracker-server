@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { RecoilRoot } from 'recoil';
 
 import Header from './Header';
 import MainContent from './MainContent';
@@ -20,10 +21,12 @@ const App = () => {
   );
 
   return (
-    <div className="container">
-      <Header authStatus={authStatus} />
-      {authStatus && <MainContent />}
-    </div>
+    <RecoilRoot>
+      <div className="container">
+        <Header authStatus={authStatus} />
+        {authStatus && <MainContent />}
+      </div>
+    </RecoilRoot>
   );
 };
 

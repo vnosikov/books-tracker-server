@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 import { addBook, editBook } from '../api/books';
 import useControlledInput from '../utils/useControlledInput';
+import { useForceUpdate } from '../atoms/booksListState';
 
 
 const BookEditor = ({ booksData, newBook }) => {
@@ -29,6 +30,7 @@ const BookEditor = ({ booksData, newBook }) => {
 
   const [show, setShow] = useState(false);
 
+  const forceUpdate = useForceUpdate();
 
   const wat = bookToEdit.references.map(r => ({
     value: r,
@@ -55,6 +57,7 @@ const BookEditor = ({ booksData, newBook }) => {
     } else {
       await editBook(book, bookId);
     }
+    forceUpdate();
     setBlocked(false);
   };
 

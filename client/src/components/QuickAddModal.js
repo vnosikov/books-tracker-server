@@ -4,6 +4,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 
 import { addBook } from '../api/books';
 import useControlledInput from '../utils/useControlledInput';
+import { useForceUpdate } from '../atoms/booksListState';
 
 
 const QuickAddModal = ({ show, setShow }) => {
@@ -11,6 +12,8 @@ const QuickAddModal = ({ show, setShow }) => {
   const [authors, setAuthors] = useControlledInput('');
   const [isRead, setIsRead] = useState(false);
   const [blocked, setBlocked] = useState(false);
+
+  const forceUpdate = useForceUpdate();
 
   const handleSubmit = async () => {
     const book = {
@@ -21,6 +24,7 @@ const QuickAddModal = ({ show, setShow }) => {
 
     setBlocked(true);
     await addBook(book);
+    forceUpdate();
     setBlocked(false);
   };
 

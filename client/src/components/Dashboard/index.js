@@ -6,10 +6,12 @@ import BooksList from './BooksList';
 import BookDetail from './BookDetails';
 
 import { deleteBook } from '../../api/books';
+import { useForceUpdate } from '../../atoms/booksListState';
 
 
 const Dashboard = ({ booksData }) => {
   const [activeBookId, setActiveBookId] = useState(null);
+  const forceUpdate = useForceUpdate();
 
   const selectBook = id => {
     if (activeBookId === id) {
@@ -19,11 +21,13 @@ const Dashboard = ({ booksData }) => {
     }
   }
 
-  const onRemoveBook = () => {
+  const onRemoveBook = async () => {
     if (!activeBookId) {
       return;
     }
-    deleteBook(activeBookId);
+    await deleteBook(activeBookId);
+    forceUpdate();
+    // setActiveBookId(null);
   }
 
   const getBookById = targetId => booksData.find(b => b.id === targetId);
