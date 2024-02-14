@@ -8,11 +8,10 @@ import { useParams } from 'react-router-dom';
 
 import { addBook, editBook } from '../api/books';
 import useControlledInput from '../utils/useControlledInput';
-import { useForceUpdate } from '../atoms/booksListState';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 const BookEditor = ({ booksData, newBook }) => {
-
   const bookId = useParams().bookId || null;
   const bookToEdit = newBook ? emptyBook :
     booksData.find(b => b.id === bookId);
@@ -26,22 +25,35 @@ const BookEditor = ({ booksData, newBook }) => {
     })),
   );
   const [isRead, setIsRead] = useState(bookToEdit.read);
-  const [blocked, setBlocked] = useState(false);
 
   const [show, setShow] = useState(false);
-
-  const forceUpdate = useForceUpdate();
-
-  const wat = bookToEdit.references.map(r => ({
-    value: r,
-    label: booksData.find(b => b.id === r),
-  }));
-  console.log('wat: ', wat);
 
   const selectOptions = booksData.map(b => ({
     label: b.title,
     value: b.id,
   }));
+
+  const queryClient = useQueryClient();
+  const addMutation = useMutation({
+    mutationFn: book => addBook(book),
+    onSuccess: data => {
+      console.log('pDATA',data)
+      queryClient.useQueryData(['books'], data);
+    },
+    mutationKey: ['addBook'],
+  });
+
+  const editMutation = useMutation({
+    mutationFn: book => editBook(book, bookId),
+    onSuccess: (data, variables, context) => {
+      console.log('eDATA',data, variables, context)
+      // queryClient.useQueryData(['books'], data);
+    },
+
+    mutationKey: ['editBook'],
+  });
+
+  const blocked = addMutation.isPending || editMutation.isPending;
 
   const handleSubmit = async () => {
     const book = {
@@ -51,14 +63,11 @@ const BookEditor = ({ booksData, newBook }) => {
       read: isRead,
     };
 
-    setBlocked(true);
     if (newBook) {
-      await addBook(book);
+      addMutation.mutate(book);
     } else {
-      await editBook(book, bookId);
+      await editMutation.mutate(book);
     }
-    forceUpdate();
-    setBlocked(false);
   };
 
   return (
